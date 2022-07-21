@@ -1,9 +1,9 @@
-from flask import Flask  # Import Flask to allow us to create our app, this is needed on every flask app**
+from flask import Flask, render_template  # Import Flask to allow us to create our app, this is needed on every flask app**
 app = Flask(__name__)    # Create a new instance of the Flask class called "app", also always needed**
 @app.route('/')          # The "@" decorator associates this route with the function immediately following
 #line 3 is directly associated with the function on line 5
-def hello_world():
-    return 'Hello World!'  # Return the string 'Hello World!' as a response
+def index():
+    return render_template("index.html") # Return the string 'Hello World!' as a response
 
 @app.route('/success')
 def success():
