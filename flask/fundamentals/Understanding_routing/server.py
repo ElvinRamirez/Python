@@ -1,4 +1,5 @@
 from flask import Flask
+#from flask import abort, jsonify
 app = Flask(__name__)
 
 @app.route('/')
@@ -18,8 +19,8 @@ def greeting(name):
 def repeat(number,text):
     return str(text) * int(number)
 
-@app.errorhandler(Exception)
-def page_not_found():
+@app.errorhandler(404) 
+def invalid_route(e): 
     return "Sorry! No response. Try again."
 
 if __name__=="__main__":    
