@@ -3,16 +3,15 @@ app = Flask(__name__)    # Create a new instance of the Flask class called "app"
 @app.route('/')          # The "@" decorator associates this route with the function immediately following
 #line 3 is directly associated with the function on line 5
 def index():
-    return render_template("index.html") # Return the string 'Hello World!' as a response
+    return render_template("index.html", phrase="hello", time=5) # Return the string 'Hello World!' as a response
 
 @app.route('/success')
 def success():
     return "success"
 
-@app.route('/hello/<name>')
-def hello(name):
-    print(name)
-    return "Hello, " + name
+@app.route('/hello/<string:banana>/<int:num>')
+def hello(banana,num):
+    return render_template("hello.html",banana= banana,num= num)
 
 @app.route('/users/<username>/<id>')
 def show_user_profile(username, id):
