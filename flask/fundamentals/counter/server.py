@@ -1,4 +1,3 @@
-from crypt import methods
 from flask import Flask, render_template,session,redirect,request
 
 app = Flask(__name__)
@@ -21,7 +20,7 @@ def destroy():
 @app.route("/increment", methods=["POST"])
 def increment():
     session['count'] += int(request.form['increment'])
-    return render_template("index.html")
+    return redirect("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
