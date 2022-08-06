@@ -20,7 +20,7 @@ def destroy():
 @app.route("/increment", methods=["POST"])
 def increment():
     session['count'] += int(request.form['increment'])
-    return redirect("index.html")
+    return redirect("/")
 
 if __name__ == "__main__":
     app.run(debug=True)
