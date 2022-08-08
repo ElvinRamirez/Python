@@ -24,6 +24,32 @@ def create_user():
 def new_user():
     return render_template("new.html")
 
+@app.route("/readone/<int:id>")
+def show_one(id):
+    data={
+        "id":id
+    }
+    return render_template("/readone.html", user=User.get_one(data))
+
+@app.route("/edit/<int:id>")
+def edit_user(id):
+    data={
+        "id":id
+    }
+    return render_template("/edit.html",user=User.get_one(data))
+
+@app.route("/edit/user",methods=["POST"])
+def edit():
+    User.edit(request.form)
+    return redirect("/")
+
+@app.route("/delete/<int:id>")
+def delete(id):
+    data={
+        "id":id
+    }
+    User.delete_user(data)
+    return redirect("/")
 
 if __name__ == "__main__":
     app.run(debug=True)
