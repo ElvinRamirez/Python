@@ -7,6 +7,7 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 PASSWORD_REGEX = re.compile(r'^(?=.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$')
 
 class User:
+    db = 'users_schema'
     def __init__(self, data):
         self.id = data['id']
         self.first_name = data['first_name']
@@ -20,12 +21,12 @@ class User:
     @classmethod
     def create(cls,data):
         query = "INSERT INTO users (first_name,last_name, email, password, created_at, updated_at) VALUES (%(fname)s, %(lname)s, %(email)s, %(password)s,NOW(), NOW());"
-        return connectToMySQL('users_schema').query_db(query,data)
+        return connectToMySQL(cls.db).query_db(query,data)
     
     @classmethod
     def get_by_email(cls,data):
         query = "SELECT * FROM users WHERE email = %(email)s"
-        user = connectToMySQL('users_schema').query_db(query,data)
+        user = connectToMySQL(cls.db).query_db(query,data)
         if len(user) < 1:
             return False
         return cls(user[0])
@@ -33,12 +34,17 @@ class User:
     @classmethod    
     def get_by_id(cls,data):
         query = "SELECT * FROM users WHERE id = %(id)s;"
-        results = connectToMySQL('users_schema').query_db(query,data)
+        results = connectToMySQL(cls.db).query_db(query,data)
         return cls(results[0])
 
     @staticmethod
     def validate_user(user):
-        is_valid = True # 
+        is_valid = True 
+        query = 'SELECT * FROM users WHERE email = %(email)s;'
+        results = connectToMySQL(User.db).query_db(query,user)
+        if len(results) >= 1:
+            flash("Email already taken.","register")
+            is_valid=False
         if len(user['fname']) < 2:
             flash("Name must be at least 2 characters.","register")
             is_valid = False
